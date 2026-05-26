@@ -836,6 +836,99 @@
         </div>
     </div>
 
+    <!-- ===== STEP 8: x402 결제 체험 ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(8)">
+            <div class="step-number inactive" id="stepNum8">8</div>
+            <div class="step-title">x402 결제: KSD로 수료 뱃지 구매</div>
+            <span class="step-tag tag-analyze">분석</span>
+            <span class="step-tag tag-execute">실행</span>
+            <span class="step-chevron" id="chevron8">&#9660;</span>
+        </div>
+        <div class="step-content" id="stepContent8">
+            <div class="info-box">
+                <strong>x402 — 웹에 결제를 심다</strong><br><br>
+                HTTP 402 (Payment Required)는 1997년부터 존재했지만 사용되지 않던 상태 코드입니다.<br>
+                x402 프로토콜은 이 코드를 활용해 <strong>스테이블코인으로 웹 콘텐츠에 즉시 결제</strong>하는 표준을 만들었습니다.<br>
+                계정 없이, 구독 없이, USDC(또는 KSD) 결제만으로 콘텐츠에 접근합니다.<br><br>
+                <strong>채택 현황:</strong> Coinbase, Cloudflare, Stripe, Google, Visa, Mastercard가 참여하는 x402 Foundation 설립 (2026)
+            </div>
+
+            <div class="card">
+                <h3>x402 결제 흐름</h3>
+                <div style="display:flex; align-items:center; gap:6px; margin:16px 0; flex-wrap:wrap; justify-content:center; font-size:13px;">
+                    <div style="background:#1e3a5f; padding:10px 14px; border-radius:8px; text-align:center;">
+                        <div style="color:#94a3b8;">1</div>
+                        <div style="font-weight:700; color:#60a5fa;">GET /certificate</div>
+                    </div>
+                    <div style="color:#94a3b8;">&rarr;</div>
+                    <div style="background:#7f1d1d; padding:10px 14px; border-radius:8px; text-align:center;">
+                        <div style="color:#94a3b8;">2</div>
+                        <div style="font-weight:700; color:#ef4444;">402 Payment Required</div>
+                    </div>
+                    <div style="color:#94a3b8;">&rarr;</div>
+                    <div style="background:#064e3b; padding:10px 14px; border-radius:8px; text-align:center;">
+                        <div style="color:#94a3b8;">3</div>
+                        <div style="font-weight:700; color:#10b981;">KSD 결제</div>
+                    </div>
+                    <div style="color:#94a3b8;">&rarr;</div>
+                    <div style="background:#3b1f5e; padding:10px 14px; border-radius:8px; text-align:center;">
+                        <div style="color:#94a3b8;">4</div>
+                        <div style="font-weight:700; color:#c084fc;">200 OK + 뱃지</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:12px;">
+                <h3>수료 뱃지 구매하기</h3>
+                <p style="margin:8px 0; color:#94a3b8;">KSD 10개를 결제하면 워크숍 수료 뱃지를 받을 수 있습니다.</p>
+
+                <!-- Step A: 402 요청 -->
+                <div style="margin-top:16px;">
+                    <button class="btn btn-primary" onclick="requestCertificate()" id="x402RequestBtn" disabled>
+                        Step 1: 수료 뱃지 요청 (GET /certificate)
+                    </button>
+                    <div id="x402Status" style="margin-top:8px; font-size:14px;"></div>
+                </div>
+
+                <!-- 402 응답 표시 -->
+                <div id="x402Response" style="display:none; margin-top:12px;">
+                    <div style="background:#7f1d1d; border:1px solid #ef4444; border-radius:8px; padding:16px;">
+                        <div style="font-size:14px; font-weight:700; color:#ef4444; margin-bottom:8px;">
+                            HTTP 402 — Payment Required
+                        </div>
+                        <pre id="x402ResponseBody" style="background:#0f172a; padding:12px; border-radius:6px; font-size:12px; overflow-x:auto; color:#e2e8f0; margin:0;"></pre>
+                    </div>
+
+                    <!-- Step B: 결제 -->
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-green" onclick="payWithKSD()" id="x402PayBtn">
+                            Step 2: KSD 10개 결제하기
+                        </button>
+                        <div id="x402PayStatus" style="margin-top:8px; font-size:14px;"></div>
+                    </div>
+                </div>
+
+                <!-- 수료 뱃지 표시 -->
+                <div id="x402Certificate" style="display:none; margin-top:16px;">
+                    <div style="background: linear-gradient(135deg, #1a1040 0%, #0d2540 100%); border:2px solid #8b5cf6; border-radius:16px; padding:24px; text-align:center;">
+                        <div style="font-size:48px; margin-bottom:8px;">🎓</div>
+                        <div style="font-size:20px; font-weight:700; color:#c084fc; margin-bottom:4px;">수료 뱃지 발급 완료!</div>
+                        <div id="x402CertContent" style="font-size:13px; color:#94a3b8; margin-top:12px; text-align:left;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top:12px;">
+                <strong>실제 x402와의 차이점</strong><br>
+                - 실제 x402: <strong>USDC</strong> + Coinbase facilitator가 결제 검증<br>
+                - 우리 실습: <strong>KSD</strong> + 자체 서버가 온체인에서 직접 검증<br>
+                - 핵심 흐름 (402 → 결제 → 콘텐츠)은 동일합니다<br><br>
+                <strong>x402가 중요한 이유:</strong> 스테이블코인이 단순 송금을 넘어 <strong>웹 결제 인프라</strong>가 되는 것
+            </div>
+        </div>
+    </div>
+
 </div><!-- /container -->
 
 <!-- ===== JavaScript ===== -->
@@ -926,9 +1019,12 @@
             document.getElementById('myAddrDisplay').textContent = userAddress;
 
             // Step 번호 활성화
-            for (let i = 2; i <= 7; i++) {
+            for (let i = 2; i <= 8; i++) {
                 document.getElementById('stepNum' + i).className = 'step-number active';
             }
+
+            // x402 버튼 활성화
+            document.getElementById('x402RequestBtn').disabled = false;
 
             // 대시보드 & 잔액 업데이트
             await refreshDashboard();
@@ -1134,6 +1230,103 @@
 
     function resetArb() {
         if (currentScenario) selectScenario(currentScenario);
+    }
+
+    // ===== x402 결제 =====
+    const X402_SERVER = '';
+    const KSD_TRANSFER_ABI = ['function transfer(address to, uint256 amount) returns (bool)'];
+
+    async function requestCertificate() {
+        const statusEl = document.getElementById('x402Status');
+        try {
+            statusEl.innerHTML = '<span style="color:#60a5fa;">&#9203; GET /certificate 요청 중...</span>';
+            const res = await fetch(X402_SERVER + '/certificate', {
+                headers: {}
+            });
+            const data = await res.json();
+
+            if (res.status === 402) {
+                document.getElementById('x402ResponseBody').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('x402Response').style.display = 'block';
+                statusEl.innerHTML = '<span style="color:#ef4444;">&#10007; 서버가 402 Payment Required를 반환했습니다. 결제가 필요합니다!</span>';
+            } else if (res.status === 200) {
+                showCertificate(data);
+                statusEl.innerHTML = '<span style="color:#10b981;">&#10003; 이미 결제 완료! 수료 뱃지를 받았습니다.</span>';
+            }
+        } catch (err) {
+            console.error(err);
+            statusEl.innerHTML = `<span style="color:#ef4444;">&#10007; 서버 연결 실패: ${err.message}</span>`;
+        }
+    }
+
+    async function payWithKSD() {
+        const payStatusEl = document.getElementById('x402PayStatus');
+        try {
+            document.getElementById('x402PayBtn').disabled = true;
+            payStatusEl.innerHTML = '<span style="color:#f59e0b;">&#9203; KSD 전송 중... MetaMask를 확인하세요.</span>';
+
+            const ksdForTransfer = new ethers.Contract(CONTRACT_ADDRESS, KSD_TRANSFER_ABI, signer);
+            const amount = ethers.parseUnits('10', DECIMALS);
+            const tx = await ksdForTransfer.transfer('0x7E91884cC68ABD397A83939F69E70Df0d847A4E6', amount);
+
+            payStatusEl.innerHTML = '<span style="color:#60a5fa;">&#9203; 트랜잭션 확인 대기 중...</span>';
+            const receipt = await tx.wait();
+
+            payStatusEl.innerHTML = '<span style="color:#60a5fa;">&#9203; 서버에 결제 검증 요청 중...</span>';
+
+            const verifyRes = await fetch(X402_SERVER + '/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ txHash: receipt.hash, payerAddress: userAddress }),
+            });
+            const verifyData = await verifyRes.json();
+
+            if (verifyData.verified) {
+                showCertificate(verifyData.certificate);
+                payStatusEl.innerHTML = '<span style="color:#10b981;">&#10003; 결제 확인! 수료 뱃지가 발급되었습니다.</span>';
+                await refreshBalance();
+            } else {
+                payStatusEl.innerHTML = `<span style="color:#ef4444;">&#10007; ${verifyData.error}</span>`;
+            }
+        } catch (err) {
+            console.error(err);
+            payStatusEl.innerHTML = `<span style="color:#ef4444;">&#10007; 에러: ${err.reason || err.message}</span>`;
+        } finally {
+            document.getElementById('x402PayBtn').disabled = false;
+        }
+    }
+
+    function showCertificate(cert) {
+        document.getElementById('x402Certificate').style.display = 'block';
+        document.getElementById('x402CertContent').innerHTML = `
+            <table style="width:100%; border-collapse:collapse;">
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8; width:100px;">수료자</td>
+                    <td style="padding:6px 0; font-family:monospace;">${cert.recipient}</td>
+                </tr>
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8;">과정</td>
+                    <td style="padding:6px 0;">${cert.details?.course || cert.title}</td>
+                </tr>
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8;">학습 내용</td>
+                    <td style="padding:6px 0;">${cert.details?.topics?.join(', ') || '-'}</td>
+                </tr>
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8;">결제</td>
+                    <td style="padding:6px 0;">${cert.details?.paymentAmount || 10} KSD</td>
+                </tr>
+                <tr>
+                    <td style="padding:6px 0; color:#94a3b8;">발급일</td>
+                    <td style="padding:6px 0;">${new Date(cert.issuedAt).toLocaleString()}</td>
+                </tr>
+            </table>
+            <div style="margin-top:12px; text-align:center; color:#c084fc; font-weight:600;">
+                ${cert.message}
+            </div>
+        `;
     }
 
     // ===== 주소 복사 =====
