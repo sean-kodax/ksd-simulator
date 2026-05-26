@@ -318,38 +318,38 @@
             </div>
             <div class="card" id="airdropCard">
                 <h3>에어드랍 받기</h3>
-                <p style="margin: 8px 0; color: #94a3b8;">
-                    지갑을 연결하면 아래에 주소가 표시됩니다. 주소를 복사하여 강사에게 제출하세요.<br>
-                    강사가 에어드랍을 실행하면 <strong>0.002 ETH + 100 KSD</strong>가 동시에 지갑에 도착합니다!
-                </p>
-                <div id="airdropSection" style="display:none;">
-                    <div style="background:#0f172a; border:1px solid #374151; border-radius:8px; padding:16px; margin:12px 0; display:flex; align-items:center; gap:12px;">
-                        <span style="font-family:'Courier New',monospace; font-size:14px; flex:1; word-break:break-all;" id="myAddrDisplay"></span>
-                        <button class="btn btn-primary" onclick="copyMyAddress()" style="white-space:nowrap; padding:8px 16px;">
-                            주소 복사
-                        </button>
+                <div style="display:flex; gap:20px; align-items:flex-start; margin-top:12px;">
+                    <div style="flex:1;">
+                        <p style="margin:0 0 8px; color:#94a3b8; font-size:13px;">
+                            지갑 연결 → 주소 복사 → QR 스캔하여 구글 폼에 제출하세요.<br>
+                            강사가 에어드랍 실행 시 <strong style="color:#e2e8f0;">0.002 ETH + 100 KSD</strong> 동시 수령!
+                        </p>
+                        <div id="airdropSection" style="display:none;">
+                            <div style="background:#0f172a; border:1px solid #374151; border-radius:8px; padding:10px 12px; display:flex; align-items:center; gap:8px;">
+                                <span style="font-family:'Courier New',monospace; font-size:12px; flex:1; word-break:break-all; color:#94a3b8;" id="myAddrDisplay"></span>
+                                <button class="btn btn-primary" onclick="copyMyAddress()" style="white-space:nowrap; padding:6px 12px; font-size:12px;">
+                                    복사
+                                </button>
+                            </div>
+                            <div id="copyStatus" style="font-size:12px; margin-top:4px;"></div>
+                        </div>
+                        <div id="airdropNotConnected">
+                            <p style="color:#f59e0b; font-size:12px; margin-top:8px;">먼저 위의 "지갑 연결" 버튼을 클릭하세요.</p>
+                        </div>
+                        <p style="margin-top:8px; font-size:12px; color:#6b7280;">
+                            <strong style="color:#94a3b8;">에어드랍이란?</strong> 프로젝트가 사용자에게 토큰을 무료로 배포하는 것.
+                            강사가 하나의 트랜잭션으로 전원에게 동시 전송합니다.
+                        </p>
                     </div>
-                    <div id="copyStatus" style="font-size:13px; margin-top:4px;"></div>
-                </div>
-                <div id="airdropNotConnected" style="margin-top:8px;">
-                    <p style="color:#f59e0b; font-size:13px;">먼저 위의 "지갑 연결" 버튼을 클릭하세요.</p>
-                </div>
-                <div style="margin-top:16px; text-align:center;">
-                    <p style="color:#94a3b8; font-size:14px; margin-bottom:12px;">주소를 복사한 후, 아래 QR코드를 스캔하여 구글 폼에 제출하세요.</p>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fforms.gle%2FqA8CjuvAAbpiiC1M9&bgcolor=111827&color=e2e8f0"
-                         alt="에어드랍 주소 제출 QR"
-                         style="border-radius:12px; border:2px solid #374151; padding:8px; background:#fff;">
-                    <p style="margin-top:8px;">
-                        <a href="https://forms.gle/qA8CjuvAAbpiiC1M9" target="_blank" style="color:#60a5fa; font-size:13px;">
-                            구글 폼 직접 열기 &rarr;
+                    <div style="flex-shrink:0; text-align:center;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https%3A%2F%2Fforms.gle%2FqA8CjuvAAbpiiC1M9"
+                             alt="에어드랍 주소 제출 QR"
+                             style="border-radius:8px; background:#fff; padding:6px; width:130px; height:130px;">
+                        <a href="https://forms.gle/qA8CjuvAAbpiiC1M9" target="_blank"
+                           style="display:block; color:#60a5fa; font-size:11px; margin-top:6px;">
+                            구글 폼 열기 &rarr;
                         </a>
-                    </p>
-                </div>
-                <div class="info-box" style="margin-top:12px;">
-                    <strong>에어드랍이란?</strong><br>
-                    프로젝트가 사용자들에게 토큰을 무료로 배포하는 것을 에어드랍(Airdrop)이라 합니다.<br>
-                    강사가 하나의 트랜잭션으로 수강생 전원에게 동시에 전송합니다.
-                    BaseScan에서 해당 트랜잭션을 확인해보세요!
+                    </div>
                 </div>
             </div>
             <div class="card" style="margin-top: 12px;">
@@ -433,9 +433,12 @@
                 </div>
             </div>
             <div style="margin: 8px 0;">
-                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #94a3b8;">
                     <span>준비금 커버리지</span>
-                    <span id="coverageText">-</span>
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <span id="coverageText">-</span>
+                        <button class="btn btn-outline" onclick="refreshDashboard()" style="padding:4px 10px; font-size:11px;">새로고침</button>
+                    </span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="coverageBar" style="width: 0%;">0%</div>
@@ -466,9 +469,6 @@
                     Circle Transparency Report 바로가기 &rarr;
                 </a>
             </div>
-            <button class="btn btn-outline" onclick="refreshDashboard()" style="margin-top: 12px;">
-                준비금 새로고침
-            </button>
         </div>
     </div>
 
@@ -569,15 +569,60 @@
             <div class="card" style="margin-top: 16px;">
                 <h3>실제 사례: 2023년 SVB 사태</h3>
                 <div class="info-box">
-                    2023년 3월, 실리콘밸리은행(SVB)이 파산하면서 Circle의 준비금 중 <strong>$3.3B</strong>이 SVB에 예치되어 있다는 사실이 알려졌습니다.<br><br>
-                    - USDC 가격: <strong>$1.00 &rarr; $0.87</strong>까지 급락<br>
-                    - 차익거래자들이 대량 매수하여 서서히 회복<br>
-                    - 미 정부 SVB 예금 보호 발표 후 <strong>$1.00으로 복귀</strong><br><br>
-                    <strong>교훈:</strong> 준비금의 구성과 안전성이 곧 페깅의 안정성
+                    2023년 3월, 실리콘밸리은행(SVB)이 파산하면서 Circle의 준비금 중 <strong>$3.3B</strong>이 SVB에 예치되어 있다는 사실이 알려졌습니다.
                 </div>
-                <a class="guide-link" href="https://www.circle.com/blog/an-update-on-usdc-and-silicon-valley-bank" target="_blank">
-                    Circle 공식 사후 보고서 &rarr;
+
+                <!-- 타임라인 -->
+                <div style="margin:16px 0;">
+                    <h4 style="margin-bottom:12px; color:#e2e8f0;">디페깅 타임라인</h4>
+                    <div style="display:flex; flex-direction:column; gap:0; position:relative; padding-left:20px; border-left:2px solid #374151;">
+                        <div style="padding:8px 0 8px 16px; position:relative;">
+                            <div style="position:absolute; left:-27px; top:12px; width:12px; height:12px; border-radius:50%; background:#3b82f6;"></div>
+                            <div style="font-size:12px; color:#60a5fa; font-weight:600;">3월 10일 (금)</div>
+                            <div style="font-size:13px; color:#e2e8f0;">SVB 파산 발표. USDC 가격 $1.00 유지 중</div>
+                        </div>
+                        <div style="padding:8px 0 8px 16px; position:relative;">
+                            <div style="position:absolute; left:-27px; top:12px; width:12px; height:12px; border-radius:50%; background:#f59e0b;"></div>
+                            <div style="font-size:12px; color:#f59e0b; font-weight:600;">3월 10일 저녁</div>
+                            <div style="font-size:13px; color:#e2e8f0;">Circle이 SVB에 $3.3B 예치 사실 공개. 공포 매도 시작</div>
+                        </div>
+                        <div style="padding:8px 0 8px 16px; position:relative;">
+                            <div style="position:absolute; left:-27px; top:12px; width:12px; height:12px; border-radius:50%; background:#ef4444;"></div>
+                            <div style="font-size:12px; color:#ef4444; font-weight:600;">3월 11일 (토) 새벽</div>
+                            <div style="font-size:13px; color:#e2e8f0;">USDC 가격 <strong style="color:#ef4444;">$0.87</strong>까지 급락 (역대 최저). 24시간 동안 $2B+ USDC 소각 (환매)</div>
+                        </div>
+                        <div style="padding:8px 0 8px 16px; position:relative;">
+                            <div style="position:absolute; left:-27px; top:12px; width:12px; height:12px; border-radius:50%; background:#f59e0b;"></div>
+                            <div style="font-size:12px; color:#f59e0b; font-weight:600;">3월 11~12일</div>
+                            <div style="font-size:13px; color:#e2e8f0;">차익거래자들이 $0.87~0.95에 USDC 대량 매수. 가격 서서히 회복</div>
+                        </div>
+                        <div style="padding:8px 0 8px 16px; position:relative;">
+                            <div style="position:absolute; left:-27px; top:12px; width:12px; height:12px; border-radius:50%; background:#10b981;"></div>
+                            <div style="font-size:12px; color:#10b981; font-weight:600;">3월 12일 (일) 저녁</div>
+                            <div style="font-size:13px; color:#e2e8f0;">미 정부, SVB 예금 전액 보호 발표. USDC <strong style="color:#10b981;">$1.00 복귀</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 온체인 데이터 링크 -->
+                <h4 style="margin:16px 0 8px; color:#e2e8f0;">직접 확인해보기</h4>
+                <a class="guide-link" href="https://www.coingecko.com/en/coins/usdc?chart=type%3Dprice%26mode%3Dline%26from%3D1678374000000%26to%3D1678719599999" target="_blank">
+                    CoinGecko USDC 시세 차트 &rarr; 2023년 3월 10~13일 $0.87 급락 구간
                 </a>
+                <a class="guide-link" href="https://dune.com/rencryptofish/usdc-supply-mint-burn" target="_blank">
+                    Dune Analytics &rarr; USDC 순발행량(Net Mint) 차트: 차트 왼쪽 아래로 깊게 내려간 막대 클러스터가 SVB 구간. 3주간 매일 $5억~$12억 순소각
+                </a>
+                <a class="guide-link" href="https://www.circle.com/pressroom/3-3-billion-of-usdc-reserve-risk-removed-dollar-de-peg-closes" target="_blank">
+                    Circle 공식 발표 &rarr; "$3.3B USDC Reserve Risk Removed, Dollar De-peg Closes" (2023.3.13)
+                </a>
+
+                <!-- 교훈 -->
+                <div class="info-box" style="margin-top:12px;">
+                    <strong>핵심 교훈</strong><br>
+                    - <strong>준비금 구성이 곧 리스크:</strong> Circle 준비금의 8%만 SVB에 있었지만, 시장은 13% 디페깅으로 반응<br>
+                    - <strong>차익거래가 페깅을 복원:</strong> $0.87에 매수 → $1.00에 환매 = 15% 수익 기회가 가격을 끌어올림<br>
+                    - <strong>사후 변화:</strong> Circle은 이후 준비금 100%를 BlackRock 관리 미국 국채 펀드로 이전
+                </div>
             </div>
         </div>
     </div>
@@ -643,6 +688,150 @@
                         우리 KSD는 교육 목적으로 <strong>누구나</strong> Mint할 수 있도록 했습니다.
                     </p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STEP 7: CCTPv2 크로스체인 전송 ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(7)">
+            <div class="step-number inactive" id="stepNum7">7</div>
+            <div class="step-title">CCTPv2: 체인 간 USDC 전송 체험</div>
+            <span class="step-tag tag-analyze">분석</span>
+            <span class="step-tag tag-execute">실행</span>
+            <span class="step-chevron" id="chevron7">&#9660;</span>
+        </div>
+        <div class="step-content" id="stepContent7">
+            <div class="info-box">
+                <strong>왜 KSD가 아니라 USDC로 할까?</strong><br><br>
+                크로스체인 전송에는 "이 소각이 진짜인가?"를 검증하는 <strong>신뢰 인프라</strong>가 필요합니다.<br>
+                CCTPv2는 Circle이 운영하는 USDC 전용 인프라로, 우리 KSD로는 사용할 수 없습니다.<br>
+                <strong>이것이 USDC의 진짜 경쟁력</strong> — 전 세계 체인을 잇는 신뢰 네트워크입니다.
+            </div>
+
+            <div class="card">
+                <h3>CCTPv2란?</h3>
+                <p style="margin:8px 0; color:#94a3b8;">
+                    Cross-Chain Transfer Protocol v2. USDC를 한 체인에서 <strong>소각(Burn)</strong>하고,
+                    다른 체인에서 <strong>발행(Mint)</strong>하는 방식으로 네이티브 전송합니다.
+                </p>
+                <div style="display:flex; align-items:center; gap:8px; margin:16px 0; flex-wrap:wrap; justify-content:center;">
+                    <div style="background:#1e3a5f; padding:12px 16px; border-radius:8px; text-align:center;">
+                        <div style="font-size:11px; color:#94a3b8;">Ethereum</div>
+                        <div style="font-size:16px; font-weight:700; color:#ef4444;">Burn</div>
+                    </div>
+                    <div style="color:#94a3b8; font-size:20px;">&rarr;</div>
+                    <div style="background:#1e3a5f; padding:12px 16px; border-radius:8px; text-align:center;">
+                        <div style="font-size:11px; color:#94a3b8;">Circle</div>
+                        <div style="font-size:16px; font-weight:700; color:#f59e0b;">Attest</div>
+                    </div>
+                    <div style="color:#94a3b8; font-size:20px;">&rarr;</div>
+                    <div style="background:#1e3a5f; padding:12px 16px; border-radius:8px; text-align:center;">
+                        <div style="font-size:11px; color:#94a3b8;">Base</div>
+                        <div style="font-size:16px; font-weight:700; color:#10b981;">Mint</div>
+                    </div>
+                </div>
+                <div style="margin:12px 0; font-size:13px; color:#94a3b8;">
+                    <strong style="color:#e2e8f0;">4단계 흐름:</strong><br>
+                    1. <strong>Approve</strong> — USDC 사용 권한 부여<br>
+                    2. <strong>Burn</strong> — 소스 체인에서 USDC 소각<br>
+                    3. <strong>Attestation</strong> — Circle이 소각을 검증하고 서명 발급 (수십 초~수 분)<br>
+                    4. <strong>Mint</strong> — 목적지 체인에서 USDC 발행
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:12px;">
+                <h3>직접 체험하기: Ethereum Sepolia &rarr; Base Sepolia</h3>
+
+                <div class="guide-step">
+                    <div class="guide-step-num">1</div>
+                    <div>
+                        <strong>테스트넷 USDC 받기</strong>
+                        <p style="color:#94a3b8; margin-top:4px;">Circle 공식 Faucet에서 Ethereum Sepolia USDC를 무료로 받으세요. 계정 불필요.</p>
+                        <a class="guide-link" href="https://faucet.circle.com/" target="_blank">
+                            Circle USDC Faucet &rarr; 네트워크 "Ethereum Sepolia" 선택, 20 USDC 수령
+                        </a>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-num">2</div>
+                    <div>
+                        <strong>CCTPv2 전송 앱 접속</strong>
+                        <p style="color:#94a3b8; margin-top:4px;">아래 링크로 접속하세요.</p>
+                        <a class="guide-link" href="https://subfibrous-azaria-uncredulously.ngrok-free.dev" target="_blank">
+                            CCTPv2 전송 앱 열기 &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-num">3</div>
+                    <div>
+                        <strong>전송 실행</strong>
+                        <p style="color:#94a3b8; margin-top:4px;">
+                            1. <strong>"Connect EVM Wallet"</strong> 클릭 → MetaMask 연결<br>
+                            2. Source: <strong>Ethereum Sepolia</strong>, Destination: <strong>Base Sepolia</strong><br>
+                            3. Amount: <strong>1~5 USDC</strong> 입력<br>
+                            4. <strong>"Start Transfer"</strong> 클릭<br>
+                            5. 4단계 (Approve → Burn → Attestation → Mint) 진행 관찰
+                        </p>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-num">4</div>
+                    <div>
+                        <strong>결과 확인</strong>
+                        <p style="color:#94a3b8; margin-top:4px;">
+                            전송 완료 후 MetaMask에서 네트워크를 Base Sepolia로 전환하면<br>
+                            USDC가 도착한 것을 확인할 수 있습니다.<br><br>
+                            <strong>핵심:</strong> 소스 체인에서 소각된 USDC와 목적지 체인에서 발행된 USDC는<br>
+                            <strong>동일한 양</strong>이며, 중간에 Circle의 attestation이 이를 보증합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top:12px;">
+                <strong>기존 브릿지와 CCTPv2의 차이</strong><br><br>
+                <table style="width:100%; font-size:13px; border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid #3b82f6;">
+                        <td style="padding:6px 0; color:#94a3b8; width:30%;"></td>
+                        <td style="padding:6px 8px; font-weight:600;">기존 브릿지 (Lock & Mint)</td>
+                        <td style="padding:6px 8px; font-weight:600;">CCTPv2 (Burn & Mint)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #1e293b;">
+                        <td style="padding:6px 0; color:#94a3b8;">방식</td>
+                        <td style="padding:6px 8px;">원본 잠금 + 래핑 토큰 발행</td>
+                        <td style="padding:6px 8px;">원본 소각 + 네이티브 발행</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #1e293b;">
+                        <td style="padding:6px 0; color:#94a3b8;">받는 토큰</td>
+                        <td style="padding:6px 8px;">래핑 USDC (USDC.e 등)</td>
+                        <td style="padding:6px 8px;">네이티브 USDC</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #1e293b;">
+                        <td style="padding:6px 0; color:#94a3b8;">리스크</td>
+                        <td style="padding:6px 8px;">브릿지 해킹 시 자금 유실</td>
+                        <td style="padding:6px 8px;">Circle이 보증</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:6px 0; color:#94a3b8;">속도</td>
+                        <td style="padding:6px 8px;">수 분~수십 분</td>
+                        <td style="padding:6px 8px;">~30초 (Fast Transfer)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card" style="margin-top:12px;">
+                <h3>더 알아보기</h3>
+                <a class="guide-link" href="https://www.circle.com/cross-chain-transfer-protocol" target="_blank">
+                    Circle 공식 — CCTPv2 소개 &rarr;
+                </a>
+                <a class="guide-link" href="https://developers.circle.com/cctp" target="_blank">
+                    CCTPv2 개발자 문서 &rarr;
+                </a>
             </div>
         </div>
     </div>
@@ -737,7 +926,7 @@
             document.getElementById('myAddrDisplay').textContent = userAddress;
 
             // Step 번호 활성화
-            for (let i = 2; i <= 6; i++) {
+            for (let i = 2; i <= 7; i++) {
                 document.getElementById('stepNum' + i).className = 'step-number active';
             }
 
