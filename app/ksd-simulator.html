@@ -316,14 +316,36 @@
                 5. RPC 오류 발생 시: MetaMask &rarr; 네트워크 설정 &rarr; Base Sepolia의 RPC URL을<br>
                 <code style="background: #1e3a5f; padding: 2px 6px; border-radius: 4px;">https://base-sepolia-rpc.publicnode.com</code> 으로 변경하세요.
             </div>
-            <div class="card">
-                <h3>테스트 ETH 받기 (Faucet)</h3>
-                <p style="margin: 12px 0; color: #94a3b8;">아래 링크에서 무료 테스트 ETH를 받을 수 있습니다:</p>
-                <a class="guide-link" href="https://www.alchemy.com/faucets/base-sepolia" target="_blank">
-                    Alchemy Base Sepolia Faucet &rarr;
-                </a>
-                <a class="guide-link" href="https://faucet.quicknode.com/base/sepolia" target="_blank">
-                    QuickNode Base Sepolia Faucet &rarr;
+            <div class="card" id="airdropCard">
+                <h3>에어드랍 받기</h3>
+                <p style="margin: 8px 0; color: #94a3b8;">
+                    지갑을 연결하면 아래에 주소가 표시됩니다. 주소를 복사하여 강사에게 제출하세요.<br>
+                    강사가 에어드랍을 실행하면 <strong>0.002 ETH + 100 KSD</strong>가 동시에 지갑에 도착합니다!
+                </p>
+                <div id="airdropSection" style="display:none;">
+                    <div style="background:#0f172a; border:1px solid #374151; border-radius:8px; padding:16px; margin:12px 0; display:flex; align-items:center; gap:12px;">
+                        <span style="font-family:'Courier New',monospace; font-size:14px; flex:1; word-break:break-all;" id="myAddrDisplay"></span>
+                        <button class="btn btn-primary" onclick="copyMyAddress()" style="white-space:nowrap; padding:8px 16px;">
+                            주소 복사
+                        </button>
+                    </div>
+                    <div id="copyStatus" style="font-size:13px; margin-top:4px;"></div>
+                </div>
+                <div id="airdropNotConnected" style="margin-top:8px;">
+                    <p style="color:#f59e0b; font-size:13px;">먼저 위의 "지갑 연결" 버튼을 클릭하세요.</p>
+                </div>
+                <div class="info-box" style="margin-top:12px;">
+                    <strong>에어드랍이란?</strong><br>
+                    프로젝트가 사용자들에게 토큰을 무료로 배포하는 것을 에어드랍(Airdrop)이라 합니다.<br>
+                    강사가 하나의 트랜잭션으로 수강생 전원에게 동시에 전송합니다.
+                    BaseScan에서 해당 트랜잭션을 확인해보세요!
+                </div>
+            </div>
+            <div class="card" style="margin-top: 12px;">
+                <h3>테스트 ETH 직접 받기 (Faucet)</h3>
+                <p style="margin: 12px 0; color: #94a3b8;">에어드랍 없이 직접 받으려면 아래 링크를 이용하세요:</p>
+                <a class="guide-link" href="https://console.optimism.io/faucet" target="_blank">
+                    Superchain Faucet (GitHub 로그인, Base Sepolia 선택) &rarr;
                 </a>
             </div>
         </div>
@@ -409,8 +431,26 @@
                 </div>
             </div>
             <div class="card">
+                <h3>블록체인에서 직접 확인하기</h3>
+                <p style="margin: 8px 0; color: #94a3b8;">위 숫자는 블록체인에 기록된 실제 데이터입니다. BaseScan에서 직접 검증해보세요.</p>
+                <a class="guide-link" href="https://sepolia.basescan.org/address/0xbAa67736C4c403e35384783100e00e2DFF454f6c#readContract" target="_blank">
+                    KSD 컨트랙트 &rarr; Read Contract (totalSupply, totalReserves 직접 조회)
+                </a>
+                <a class="guide-link" href="https://sepolia.basescan.org/token/0xbAa67736C4c403e35384783100e00e2DFF454f6c" target="_blank">
+                    KSD 토큰 전체 전송 내역 보기 &rarr;
+                </a>
+                <div class="info-box" style="margin-top: 12px;">
+                    <strong>확인 방법:</strong><br>
+                    1. "Read Contract" 링크를 클릭합니다.<br>
+                    2. <code>totalSupply</code>를 클릭 &rarr; 위의 "총 발행량"과 동일한 숫자 확인<br>
+                    3. <code>totalReserves</code>를 클릭 &rarr; 위의 "총 준비금"과 동일한 숫자 확인<br>
+                    4. 숫자 뒤에 0이 6개 붙어있는 이유: USDC처럼 소수점 6자리를 사용하기 때문<br>
+                    &nbsp;&nbsp;&nbsp;(예: 1,000 KSD = 1000000000 on-chain)
+                </div>
+            </div>
+            <div class="card" style="margin-top: 12px;">
                 <h3>실제 Circle 준비금 보고서 확인하기</h3>
-                <p style="margin: 8px 0; color: #94a3b8;">Circle은 매월 준비금 구성을 공개합니다.</p>
+                <p style="margin: 8px 0; color: #94a3b8;">Circle은 매월 준비금 구성을 공개합니다. 우리 KSD의 준비금은 컨트랙트 내 숫자이지만, 실제 USDC의 준비금은 은행 계좌의 달러와 미국 국채입니다.</p>
                 <a class="guide-link" href="https://www.circle.com/transparency" target="_blank">
                     Circle Transparency Report 바로가기 &rarr;
                 </a>
@@ -680,6 +720,11 @@
             document.getElementById('mintBtn').disabled = false;
             document.getElementById('burnBtn').disabled = false;
 
+            // 에어드랍 섹션 활성화
+            document.getElementById('airdropSection').style.display = 'block';
+            document.getElementById('airdropNotConnected').style.display = 'none';
+            document.getElementById('myAddrDisplay').textContent = userAddress;
+
             // Step 번호 활성화
             for (let i = 2; i <= 6; i++) {
                 document.getElementById('stepNum' + i).className = 'step-number active';
@@ -719,6 +764,7 @@
             const receipt = await tx.wait();
             addLog(logEl, `Mint 완료! ${amountInput} KSD 발행됨 (블록 #${receipt.blockNumber})`);
             statusEl.innerHTML = `<span style="color:#10b981;">&#10003; ${amountInput} KSD가 성공적으로 발행되었습니다!</span>`;
+            showTxDetail(logEl, tx.hash, 'Mint', amountInput);
 
             await refreshDashboard();
             await refreshBalance();
@@ -754,6 +800,7 @@
             const receipt = await tx.wait();
             addLog(logEl, `Burn 완료! ${amountInput} KSD 소각됨 (블록 #${receipt.blockNumber})`);
             statusEl.innerHTML = `<span style="color:#10b981;">&#10003; ${amountInput} KSD가 소각되고, ${amountInput} USD가 환매되었습니다!</span>`;
+            showTxDetail(logEl, tx.hash, 'Burn', amountInput);
 
             await refreshDashboard();
             await refreshBalance();
@@ -889,6 +936,15 @@
         if (currentScenario) selectScenario(currentScenario);
     }
 
+    // ===== 주소 복사 =====
+    async function copyMyAddress() {
+        if (!userAddress) return;
+        await navigator.clipboard.writeText(userAddress);
+        const el = document.getElementById('copyStatus');
+        el.innerHTML = '<span style="color:#10b981;">&#10003; 주소가 클립보드에 복사되었습니다. 강사에게 제출하세요!</span>';
+        setTimeout(() => { el.innerHTML = ''; }, 5000);
+    }
+
     // ===== 유틸 =====
     function txLink(hash) {
         return `<a href="https://sepolia.basescan.org/tx/${hash}" target="_blank">${hash.slice(0, 10)}...${hash.slice(-6)}</a>`;
@@ -900,6 +956,55 @@
         const time = new Date().toLocaleTimeString();
         entry.innerHTML = `<span style="color:#6b7280;">[${time}]</span> ${message}`;
         logEl.appendChild(entry);
+        logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function showTxDetail(logEl, hash, type, amount) {
+        const detail = document.createElement('div');
+        detail.style.cssText = 'background:#1e293b; border:1px solid #374151; border-radius:8px; padding:16px; margin:12px 0;';
+        const shortAddr = userAddress.slice(0, 6) + '...' + userAddress.slice(-4);
+        detail.innerHTML = `
+            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:${type === 'Mint' ? '#10b981' : '#ef4444'};">
+                ${type === 'Mint' ? '발행(Mint)' : '소각(Burn)'} 트랜잭션 상세
+            </div>
+            <table style="width:100%; font-size:13px; border-collapse:collapse;">
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8; width:120px;">TX Hash</td>
+                    <td style="padding:6px 0;"><a href="https://sepolia.basescan.org/tx/${hash}" target="_blank" style="color:#60a5fa;">${hash.slice(0, 18)}...</a></td>
+                </tr>
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8;">유형</td>
+                    <td style="padding:6px 0;">${type === 'Mint' ? 'USD 입금 → KSD 발행' : 'KSD 소각 → USD 환매'}</td>
+                </tr>
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8;">금액</td>
+                    <td style="padding:6px 0; font-weight:700;">${amount} KSD</td>
+                </tr>
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8;">On-chain 값</td>
+                    <td style="padding:6px 0; font-family:monospace; color:#f59e0b;">${amount}${'0'.repeat(6)} (6 decimals)</td>
+                </tr>
+                <tr style="border-bottom:1px solid #374151;">
+                    <td style="padding:6px 0; color:#94a3b8;">${type === 'Mint' ? '수령 지갑' : '소각 지갑'}</td>
+                    <td style="padding:6px 0; font-family:monospace;">${shortAddr}</td>
+                </tr>
+                <tr>
+                    <td style="padding:6px 0; color:#94a3b8;">체인</td>
+                    <td style="padding:6px 0;">Base Sepolia (Chain ID: 84532)</td>
+                </tr>
+            </table>
+            <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+                <a href="https://sepolia.basescan.org/tx/${hash}" target="_blank"
+                   style="display:inline-block; padding:8px 14px; background:#172554; color:#93c5fd; border-radius:6px; text-decoration:none; font-size:12px; font-weight:600;">
+                    BaseScan에서 트랜잭션 보기 &rarr;
+                </a>
+                <a href="https://sepolia.basescan.org/address/0xbAa67736C4c403e35384783100e00e2DFF454f6c#readContract" target="_blank"
+                   style="display:inline-block; padding:8px 14px; background:#172554; color:#93c5fd; border-radius:6px; text-decoration:none; font-size:12px; font-weight:600;">
+                    컨트랙트 상태 확인 &rarr;
+                </a>
+            </div>
+        `;
+        logEl.appendChild(detail);
         logEl.scrollTop = logEl.scrollHeight;
     }
 
