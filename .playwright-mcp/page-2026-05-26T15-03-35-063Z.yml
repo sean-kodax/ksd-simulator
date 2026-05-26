@@ -1,0 +1,155 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - banner [ref=e5]:
+        - generic [ref=e6]:
+          - button "Toggle Navigation Menu" [ref=e8] [cursor=pointer]:
+            - img [ref=e9]
+            - generic [ref=e10]: Toggle Navigation Menu
+          - link [ref=e12] [cursor=pointer]:
+            - /url: /
+            - img [ref=e13]
+          - generic [ref=e37]:
+            - button "Search ⌘ K" [ref=e39] [cursor=pointer]:
+              - generic [ref=e40]: Search
+              - generic:
+                - generic: ⌘
+                - text: K
+            - button "Toggle theme" [ref=e41] [cursor=pointer]:
+              - img [ref=e42]
+              - img
+              - generic [ref=e48]: Toggle theme
+            - button "Sign In" [ref=e49] [cursor=pointer]
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - link "Back to all faucets" [ref=e53] [cursor=pointer]:
+            - /url: /faucets/
+            - img [ref=e54]
+            - text: Back to all faucets
+          - generic [ref=e56]:
+            - img "Base Sepolia" [ref=e57]
+            - heading "Base Sepolia Faucet" [level=1] [ref=e58]
+          - paragraph [ref=e59]: Dripping 0.01 bsETH per day
+          - paragraph [ref=e60]: "Current Balance: 77.64 bsETH"
+          - alert [ref=e61]:
+            - img [ref=e62]
+            - heading "Github authentication required!" [level=5] [ref=e65]
+            - generic [ref=e66]: To prevent spam and abuse of the Base Sepolia faucet, we require you to authenticate with Github. This is a one time process and you will not need to do this again every time.
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - textbox "Enter your bsETH address" [ref=e70]
+            - generic [ref=e71]:
+              - button "Sign In" [ref=e72] [cursor=pointer]:
+                - text: Sign In
+                - img [ref=e73]
+              - button "Add Network" [ref=e76] [cursor=pointer]
+          - paragraph [ref=e77]: You must sign in to use the faucet.
+        - generic [ref=e78]:
+          - paragraph [ref=e79]: Want to donate to our faucet?
+          - paragraph [ref=e80]: Send bsETH to 0x625BCC1142E97796173104A6e817Ee46C593b3C5
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - heading "FAQ" [level=2] [ref=e84]
+            - paragraph [ref=e85]:
+              - text: Can't find the answer you're looking for? Reach out on our
+              - link "Discord" [ref=e86] [cursor=pointer]:
+                - /url: https://discord.gg/learnweb3io
+          - generic [ref=e88]:
+            - heading "How do I use the faucet?" [level=3] [ref=e90]:
+              - button "How do I use the faucet?" [ref=e91] [cursor=pointer]:
+                - generic [ref=e92]: How do I use the faucet?
+                - img [ref=e93]
+            - heading "How does the faucet work?" [level=3] [ref=e96]:
+              - button "How does the faucet work?" [ref=e97] [cursor=pointer]:
+                - generic [ref=e98]: How does the faucet work?
+                - img [ref=e99]
+            - heading "I'm having issues - how do I ask for help?" [level=3] [ref=e102]:
+              - button "I'm having issues - how do I ask for help?" [ref=e103] [cursor=pointer]:
+                - generic [ref=e104]: I'm having issues - how do I ask for help?
+                - img [ref=e105]
+            - heading "How long will it take for me to receive my tokens?" [level=3] [ref=e108]:
+              - button "How long will it take for me to receive my tokens?" [ref=e109] [cursor=pointer]:
+                - generic [ref=e110]: How long will it take for me to receive my tokens?
+                - img [ref=e111]
+            - heading "Why do I need to connect my Github account?" [level=3] [ref=e114]:
+              - button "Why do I need to connect my Github account?" [ref=e115] [cursor=pointer]:
+                - generic [ref=e116]: Why do I need to connect my Github account?
+                - img [ref=e117]
+      - contentinfo "Footer" [ref=e119]:
+        - heading "Footer" [level=2] [ref=e120]
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - heading "Learn" [level=3] [ref=e125]
+                - list [ref=e126]:
+                  - listitem [ref=e127]:
+                    - link "Minis" [ref=e128] [cursor=pointer]:
+                      - /url: /minis/
+                  - listitem [ref=e129]:
+                    - link "Lessons" [ref=e130] [cursor=pointer]:
+                      - /url: /lessons/
+                  - listitem [ref=e131]:
+                    - link "Courses & Degrees" [ref=e132] [cursor=pointer]:
+                      - /url: /degrees/
+              - generic [ref=e133]:
+                - heading "Opportunities" [level=3] [ref=e134]
+                - list [ref=e135]:
+                  - listitem [ref=e136]:
+                    - link "Earn" [ref=e137] [cursor=pointer]:
+                      - /url: /bounties/
+                  - listitem [ref=e138]:
+                    - link "Hackathons" [ref=e139] [cursor=pointer]:
+                      - /url: /hackathons/
+                  - listitem [ref=e140]:
+                    - link "Open Source" [ref=e141] [cursor=pointer]:
+                      - /url: /oss/
+                  - listitem [ref=e142]:
+                    - link "Events" [ref=e143] [cursor=pointer]:
+                      - /url: /events/
+              - generic [ref=e144]:
+                - heading "Community" [level=3] [ref=e145]
+                - list [ref=e146]:
+                  - listitem [ref=e147]:
+                    - link "Leaderboard" [ref=e148] [cursor=pointer]:
+                      - /url: /leaderboard/
+                  - listitem [ref=e149]:
+                    - link "Credentials" [ref=e150] [cursor=pointer]:
+                      - /url: /credentials/
+                  - listitem [ref=e151]:
+                    - link "My Profile" [ref=e152] [cursor=pointer]:
+                      - /url: /
+              - generic [ref=e153]:
+                - heading "Resources" [level=3] [ref=e154]
+                - list [ref=e155]:
+                  - listitem [ref=e156]:
+                    - link "Testnet Faucet" [ref=e157] [cursor=pointer]:
+                      - /url: /faucets/
+                  - listitem [ref=e158]:
+                    - link "Level Up" [ref=e159] [cursor=pointer]:
+                      - /url: /level-up/
+              - generic [ref=e160]:
+                - heading "Legal" [level=3] [ref=e161]
+                - list [ref=e162]:
+                  - listitem [ref=e163]:
+                    - link "Privacy Policy" [ref=e164] [cursor=pointer]:
+                      - /url: /legal/privacy-policy/
+                  - listitem [ref=e165]:
+                    - link "Terms and Conditions" [ref=e166] [cursor=pointer]:
+                      - /url: /legal/terms-and-conditions/
+            - generic [ref=e167]:
+              - heading "Subscribe to our newsletter" [level=3] [ref=e168]
+              - paragraph [ref=e169]: The latest news, articles, and resources, sent to your inbox weekly.
+              - generic [ref=e170]:
+                - generic [ref=e171]: Email address
+                - textbox "Email address" [ref=e172]:
+                  - /placeholder: Enter your email
+                - button "Subscribe" [ref=e174] [cursor=pointer]
+          - generic [ref=e175]:
+            - paragraph [ref=e176]: © 2026 LearnWeb3, Inc. All rights reserved.
+            - link "homepage" [ref=e177] [cursor=pointer]:
+              - /url: /
+              - img [ref=e178]
+    - region "Notifications (F8)":
+      - list
+  - alert [ref=e201]

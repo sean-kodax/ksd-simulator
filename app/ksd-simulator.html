@@ -302,13 +302,10 @@
             <span class="step-chevron open" id="chevron1">&#9660;</span>
         </div>
         <div class="step-content open" id="stepContent1">
-            <div class="info-box" style="background: #7f1d1d; border-left-color: #ef4444;">
-                <strong>이 파일은 반드시 로컬 서버를 통해 열어야 합니다!</strong><br>
-                파일을 더블클릭(file://)으로 열면 MetaMask가 작동하지 않습니다.<br>
-                터미널에서 아래 명령어를 실행한 뒤, 브라우저에서 <strong>http://localhost:8080</strong> 으로 접속하세요:<br>
-                <code style="background: #450a0a; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-top: 8px;">
-                    cd (이 파일이 있는 폴더) && python3 -m http.server 8080
-                </code>
+            <div id="fileProtocolWarning" class="info-box" style="background: #7f1d1d; border-left-color: #ef4444; display: none;">
+                <strong>파일을 직접 열어서 접속하셨습니다.</strong><br>
+                이 방식(file://)으로는 MetaMask가 작동하지 않습니다.<br>
+                강사가 안내한 <strong>URL(http://...)</strong>로 접속해주세요.
             </div>
             <div class="info-box">
                 <strong>시작하기 전에</strong><br>
@@ -625,6 +622,11 @@
         'event Burned(address indexed from, uint256 amount, uint256 newReserves)'
     ];
     const DECIMALS = 6;
+
+    // ===== file:// 프로토콜 경고 =====
+    if (window.location.protocol === 'file:') {
+        document.getElementById('fileProtocolWarning').style.display = 'block';
+    }
 
     // ===== 상태 =====
     let provider = null;
