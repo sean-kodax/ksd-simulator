@@ -312,7 +312,9 @@
                 1. MetaMask 브라우저 확장프로그램이 설치되어 있어야 합니다.<br>
                 2. 위의 <strong>"지갑 연결"</strong> 버튼을 클릭하세요.<br>
                 3. Base Sepolia 테스트넷이 자동으로 추가됩니다.<br>
-                4. 테스트용 ETH가 필요합니다 (가스비로 사용, 거의 무료).
+                4. 테스트용 ETH가 필요합니다 (가스비로 사용, 거의 무료).<br>
+                5. RPC 오류 발생 시: MetaMask &rarr; 네트워크 설정 &rarr; Base Sepolia의 RPC URL을<br>
+                <code style="background: #1e3a5f; padding: 2px 6px; border-radius: 4px;">https://base-sepolia-rpc.publicnode.com</code> 으로 변경하세요.
             </div>
             <div class="card">
                 <h3>테스트 ETH 받기 (Faucet)</h3>
@@ -606,7 +608,7 @@
         chainId: BASE_SEPOLIA_CHAIN_ID,
         chainName: 'Base Sepolia',
         nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-        rpcUrls: ['https://sepolia.base.org'],
+        rpcUrls: ['https://base-sepolia-rpc.publicnode.com', 'https://base-sepolia.drpc.org', 'https://sepolia.base.org'],
         blockExplorerUrls: ['https://sepolia.basescan.org']
     };
     const KSD_ABI = [
