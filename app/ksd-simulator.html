@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSD Stablecoin Simulator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0e17;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1f36 0%, #0d1025 100%);
+            border-bottom: 1px solid #2d3748;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 16px; color: white;
+        }
+        .logo h1 { font-size: 20px; font-weight: 700; }
+        .logo span { font-size: 12px; color: #94a3b8; }
+        .wallet-section { display: flex; align-items: center; gap: 12px; }
+        .network-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .network-ok { background: #064e3b; color: #6ee7b7; }
+        .network-wrong { background: #7f1d1d; color: #fca5a5; }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+        .btn-green { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .btn-red { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .btn-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #4b5563;
+            color: #e2e8f0;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+        .step {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .step-header {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            user-select: none;
+        }
+        .step-header:hover { background: #1a2332; }
+        .step-number {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 16px;
+            flex-shrink: 0;
+        }
+        .step-number.active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; }
+        .step-number.inactive { background: #374151; color: #9ca3af; }
+        .step-title { font-size: 18px; font-weight: 600; flex-grow: 1; }
+        .step-tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .tag-execute { background: #1e3a5f; color: #60a5fa; }
+        .tag-analyze { background: #3b1f5e; color: #c084fc; }
+        .step-chevron { color: #6b7280; transition: transform 0.3s; font-size: 20px; }
+        .step-chevron.open { transform: rotate(180deg); }
+        .step-content { padding: 0 24px 24px 24px; display: none; }
+        .step-content.open { display: block; }
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+        .info-box {
+            background: #172554;
+            border-left: 4px solid #3b82f6;
+            border-radius: 0 8px 8px 0;
+            padding: 16px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .input-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin: 16px 0;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #374151;
+            background: #0f172a;
+            color: white;
+            font-size: 16px;
+        }
+        .input-group input:focus { outline: none; border-color: #3b82f6; }
+        .reserve-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .reserve-card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .reserve-card .label { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+        .reserve-card .value { font-size: 28px; font-weight: 700; }
+        .reserve-card .value.green { color: #10b981; }
+        .reserve-card .value.blue { color: #3b82f6; }
+        .reserve-card .value.yellow { color: #f59e0b; }
+        .progress-bar {
+            width: 100%; height: 24px;
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .tx-log {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        .tx-log .entry { padding: 4px 0; border-bottom: 1px solid #1e293b; }
+        .tx-log .entry:last-child { border-bottom: none; }
+        .tx-log a { color: #60a5fa; text-decoration: none; }
+        .tx-log a:hover { text-decoration: underline; }
+        .peg-simulator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 16px 0;
+        }
+        .peg-scenario {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .peg-scenario:hover { border-color: #3b82f6; }
+        .peg-scenario.active { border-color: #8b5cf6; background: #1a1040; }
+        .peg-price { font-size: 36px; font-weight: 900; text-align: center; margin: 12px 0; }
+        .peg-price.below { color: #ef4444; }
+        .peg-price.above { color: #10b981; }
+        .arb-steps {
+            margin: 16px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .arb-steps li {
+            padding: 12px 16px;
+            background: #1e293b;
+            margin: 8px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.4;
+            transition: all 0.3s;
+        }
+        .arb-steps li.active { opacity: 1; background: #172554; border-left: 3px solid #3b82f6; }
+        .arb-steps li.done { opacity: 1; background: #064e3b; border-left: 3px solid #10b981; }
+        .arb-step-num {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: #374151;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px;
+        }
+        .guide-link {
+            display: block;
+            background: #172554;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 8px 0;
+            text-decoration: none;
+            color: #93c5fd;
+            transition: background 0.2s;
+        }
+        .guide-link:hover { background: #1e3a5f; }
+        .guide-step {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin: 16px 0;
+            padding: 16px;
+            background: #1e293b;
+            border-radius: 8px;
+        }
+        .guide-step-num {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 14px;
+            flex-shrink: 0;
+        }
+        .wallet-addr {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        @media (max-width: 768px) {
+            .reserve-dashboard { grid-template-columns: 1fr; }
+            .peg-simulator { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <div class="logo">
+        <div class="logo-icon">K$</div>
+        <div>
+            <h1>KSD Simulator</h1>
+            <span>K Stable Dollar &mdash; Stablecoin Education</span>
+        </div>
+    </div>
+    <div class="wallet-section">
+        <span id="networkBadge" class="network-badge network-wrong" style="display:none;"></span>
+        <span id="walletAddr" class="wallet-addr"></span>
+        <button id="connectBtn" class="btn btn-primary" onclick="connectWallet()">
+            지갑 연결
+        </button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- ===== STEP 1: 준비 ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(1)">
+            <div class="step-number active" id="stepNum1">1</div>
+            <div class="step-title">준비: 지갑 연결 & 네트워크 설정</div>
+            <span class="step-tag tag-execute">실행</span>
+            <span class="step-chevron open" id="chevron1">&#9660;</span>
+        </div>
+        <div class="step-content open" id="stepContent1">
+            <div class="info-box">
+                <strong>시작하기 전에</strong><br>
+                1. MetaMask 브라우저 확장프로그램이 설치되어 있어야 합니다.<br>
+                2. 위의 <strong>"지갑 연결"</strong> 버튼을 클릭하세요.<br>
+                3. Base Sepolia 테스트넷이 자동으로 추가됩니다.<br>
+                4. 테스트용 ETH가 필요합니다 (가스비로 사용, 거의 무료).
+            </div>
+            <div class="card">
+                <h3>테스트 ETH 받기 (Faucet)</h3>
+                <p style="margin: 12px 0; color: #94a3b8;">아래 링크에서 무료 테스트 ETH를 받을 수 있습니다:</p>
+                <a class="guide-link" href="https://www.alchemy.com/faucets/base-sepolia" target="_blank">
+                    Alchemy Base Sepolia Faucet &rarr;
+                </a>
+                <a class="guide-link" href="https://faucet.quicknode.com/base/sepolia" target="_blank">
+                    QuickNode Base Sepolia Faucet &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STEP 2: Mint ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(2)">
+            <div class="step-number inactive" id="stepNum2">2</div>
+            <div class="step-title">발행 (Mint): KSD 스테이블코인 만들기</div>
+            <span class="step-tag tag-analyze">분석</span>
+            <span class="step-tag tag-execute">실행</span>
+            <span class="step-chevron" id="chevron2">&#9660;</span>
+        </div>
+        <div class="step-content" id="stepContent2">
+            <div class="info-box">
+                <strong>스테이블코인은 어떻게 만들어질까?</strong><br><br>
+                실제 USDC 발행 과정:<br>
+                1. 기관 고객이 Circle 은행 계좌에 <strong>USD를 입금</strong>합니다.<br>
+                2. Circle이 입금을 <strong>확인</strong>합니다.<br>
+                3. 스마트 컨트랙트의 <code>mint</code> 함수를 호출하여 <strong>USDC를 발행</strong>합니다.<br>
+                4. 발행된 USDC가 고객 <strong>지갑에 도착</strong>합니다.<br><br>
+                지금부터 이 과정을 직접 체험해보겠습니다!
+            </div>
+            <div class="card">
+                <h3>KSD 발행하기</h3>
+                <p style="margin: 8px 0; color: #94a3b8;">달러를 입금하고 KSD를 발행해보세요. (1 USD = 1 KSD)</p>
+                <div class="input-group">
+                    <input type="number" id="mintAmount" placeholder="입금할 USD 금액 (예: 100)" min="1" max="10000" step="1">
+                    <button class="btn btn-green" onclick="doMint()" id="mintBtn" disabled>
+                        USD 입금 & Mint
+                    </button>
+                </div>
+                <div id="mintStatus" style="margin-top: 8px; font-size: 14px;"></div>
+            </div>
+            <div class="tx-log" id="mintLog" style="display:none;">
+                <div style="color: #94a3b8; margin-bottom: 8px;">Transaction Log:</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STEP 3: Reserve ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(3)">
+            <div class="step-number inactive" id="stepNum3">3</div>
+            <div class="step-title">준비금 (Reserve): 가치의 근거</div>
+            <span class="step-tag tag-analyze">분석</span>
+            <span class="step-tag tag-execute">실행</span>
+            <span class="step-chevron" id="chevron3">&#9660;</span>
+        </div>
+        <div class="step-content" id="stepContent3">
+            <div class="info-box">
+                <strong>방금 KSD를 발행했는데, 이 돈의 가치는 뭐가 보장하나요?</strong><br><br>
+                스테이블코인의 가치는 <strong>준비금(Reserve)</strong>이 보장합니다.<br>
+                Circle은 USDC 발행량만큼의 달러를 보유하고 있습니다:<br>
+                - 약 80%: <strong>미국 단기 국채 (T-Bills)</strong><br>
+                - 약 20%: <strong>현금 (은행 예금)</strong><br><br>
+                아래에서 우리 KSD의 준비금 현황을 실시간으로 확인하세요.
+            </div>
+            <div class="reserve-dashboard">
+                <div class="reserve-card">
+                    <div class="label">총 발행량 (Total Supply)</div>
+                    <div class="value blue" id="dashSupply">0</div>
+                    <div class="label">KSD</div>
+                </div>
+                <div class="reserve-card">
+                    <div class="label">총 준비금 (Reserves)</div>
+                    <div class="value green" id="dashReserves">0</div>
+                    <div class="label">USD</div>
+                </div>
+                <div class="reserve-card">
+                    <div class="label">준비금 비율</div>
+                    <div class="value yellow" id="dashRatio">-%</div>
+                </div>
+            </div>
+            <div style="margin: 8px 0;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8;">
+                    <span>준비금 커버리지</span>
+                    <span id="coverageText">-</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="coverageBar" style="width: 0%;">0%</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>실제 Circle 준비금 보고서 확인하기</h3>
+                <p style="margin: 8px 0; color: #94a3b8;">Circle은 매월 준비금 구성을 공개합니다.</p>
+                <a class="guide-link" href="https://www.circle.com/transparency" target="_blank">
+                    Circle Transparency Report 바로가기 &rarr;
+                </a>
+            </div>
+            <button class="btn btn-outline" onclick="refreshDashboard()" style="margin-top: 12px;">
+                준비금 새로고침
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== STEP 4: Burn ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(4)">
+            <div class="step-number inactive" id="stepNum4">4</div>
+            <div class="step-title">소각 (Burn): KSD를 다시 달러로</div>
+            <span class="step-tag tag-analyze">분석</span>
+            <span class="step-tag tag-execute">실행</span>
+            <span class="step-chevron" id="chevron4">&#9660;</span>
+        </div>
+        <div class="step-content" id="stepContent4">
+            <div class="info-box">
+                <strong>스테이블코인을 다시 달러로 바꾸려면?</strong><br><br>
+                USDC를 달러로 환매하는 과정 (Redemption):<br>
+                1. 고객이 Circle에 <strong>USDC 환매를 요청</strong>합니다.<br>
+                2. 스마트 컨트랙트의 <code>burn</code> 함수로 <strong>USDC를 소각</strong>합니다.<br>
+                3. Circle이 고객의 은행 계좌에 <strong>USD를 송금</strong>합니다.<br><br>
+                소각하면 총 발행량과 준비금이 동시에 줄어드는 것을 확인하세요!
+            </div>
+            <div class="card">
+                <h3>KSD 소각하기</h3>
+                <p style="margin: 8px 0; color: #94a3b8;">보유한 KSD를 소각하고 USD로 환매합니다.</p>
+                <p style="margin: 8px 0;">내 KSD 잔액: <strong id="myBalance">0</strong> KSD</p>
+                <div class="input-group">
+                    <input type="number" id="burnAmount" placeholder="소각할 KSD 금액" min="1" step="1">
+                    <button class="btn btn-red" onclick="doBurn()" id="burnBtn" disabled>
+                        Burn & USD 환매
+                    </button>
+                </div>
+                <div id="burnStatus" style="margin-top: 8px; font-size: 14px;"></div>
+            </div>
+            <div class="tx-log" id="burnLog" style="display:none;">
+                <div style="color: #94a3b8; margin-bottom: 8px;">Transaction Log:</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STEP 5: Pegging ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(5)">
+            <div class="step-number inactive" id="stepNum5">5</div>
+            <div class="step-title">페깅 유지: 왜 1 KSD = 1 USD 인가?</div>
+            <span class="step-tag tag-analyze">분석</span>
+            <span class="step-tag tag-execute">실행</span>
+            <span class="step-chevron" id="chevron5">&#9660;</span>
+        </div>
+        <div class="step-content" id="stepContent5">
+            <div class="info-box">
+                <strong>KSD 1개가 항상 1달러인 이유는?</strong><br><br>
+                답은 <strong>차익거래(Arbitrage)</strong>입니다.<br>
+                시장 참여자들이 가격 차이에서 이익을 얻으려 하면서 자연스럽게 가격이 $1.00으로 수렴합니다.<br>
+                아래 두 시나리오를 직접 체험해보세요!
+            </div>
+
+            <div class="peg-simulator">
+                <!-- 시나리오 A: 가격 하락 -->
+                <div class="peg-scenario" id="scenarioBelow" onclick="selectScenario('below')">
+                    <h3 style="text-align: center;">시나리오 A</h3>
+                    <p style="text-align: center; color: #94a3b8;">KSD 가격이 떨어졌다면?</p>
+                    <div class="peg-price below">$0.98</div>
+                    <p style="text-align: center; font-size: 13px; color: #fca5a5;">
+                        시장에서 KSD가 $0.98에 거래 중
+                    </p>
+                </div>
+                <!-- 시나리오 B: 가격 상승 -->
+                <div class="peg-scenario" id="scenarioAbove" onclick="selectScenario('above')">
+                    <h3 style="text-align: center;">시나리오 B</h3>
+                    <p style="text-align: center; color: #94a3b8;">KSD 가격이 올랐다면?</p>
+                    <div class="peg-price above">$1.02</div>
+                    <p style="text-align: center; font-size: 13px; color: #6ee7b7;">
+                        시장에서 KSD가 $1.02에 거래 중
+                    </p>
+                </div>
+            </div>
+
+            <!-- 차익거래 시뮬레이션 -->
+            <div id="arbSimulation" style="display: none;">
+                <div class="card">
+                    <h3 id="arbTitle"></h3>
+                    <p id="arbDesc" style="margin: 8px 0; color: #94a3b8;"></p>
+                    <ul class="arb-steps" id="arbSteps"></ul>
+                    <div style="text-align: center; margin-top: 16px;">
+                        <button class="btn btn-purple" onclick="nextArbStep()" id="arbNextBtn">
+                            다음 단계 &rarr;
+                        </button>
+                        <button class="btn btn-outline" onclick="resetArb()" style="margin-left: 8px;">
+                            처음부터
+                        </button>
+                    </div>
+                    <div id="arbResult" style="display:none; margin-top: 16px; padding: 16px; background: #064e3b; border-radius: 8px; text-align: center;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SVB 사례 -->
+            <div class="card" style="margin-top: 16px;">
+                <h3>실제 사례: 2023년 SVB 사태</h3>
+                <div class="info-box">
+                    2023년 3월, 실리콘밸리은행(SVB)이 파산하면서 Circle의 준비금 중 <strong>$3.3B</strong>이 SVB에 예치되어 있다는 사실이 알려졌습니다.<br><br>
+                    - USDC 가격: <strong>$1.00 &rarr; $0.87</strong>까지 급락<br>
+                    - 차익거래자들이 대량 매수하여 서서히 회복<br>
+                    - 미 정부 SVB 예금 보호 발표 후 <strong>$1.00으로 복귀</strong><br><br>
+                    <strong>교훈:</strong> 준비금의 구성과 안전성이 곧 페깅의 안정성
+                </div>
+                <a class="guide-link" href="https://www.circle.com/blog/an-update-on-usdc-and-silicon-valley-bank" target="_blank">
+                    Circle 공식 사후 보고서 &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STEP 6: 실제 USDC 추적 ===== -->
+    <div class="step">
+        <div class="step-header" onclick="toggleStep(6)">
+            <div class="step-number inactive" id="stepNum6">6</div>
+            <div class="step-title">실제 USDC Mint 트랜잭션 추적하기</div>
+            <span class="step-tag tag-analyze">분석</span>
+            <span class="step-chevron" id="chevron6">&#9660;</span>
+        </div>
+        <div class="step-content" id="stepContent6">
+            <div class="info-box">
+                방금 우리가 KSD로 체험한 것과 동일한 과정이 실제 USDC에서도 일어나고 있습니다.<br>
+                Etherscan에서 직접 실제 USDC 발행 기록을 찾아보겠습니다.
+            </div>
+
+            <div class="guide-step">
+                <div class="guide-step-num">1</div>
+                <div>
+                    <strong>USDC 컨트랙트 페이지 열기</strong>
+                    <p style="color: #94a3b8; margin-top: 4px;">아래 링크를 클릭하면 Ethereum 메인넷의 실제 USDC 컨트랙트로 이동합니다.</p>
+                    <a class="guide-link" href="https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" target="_blank">
+                        Etherscan USDC 컨트랙트 &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <div class="guide-step">
+                <div class="guide-step-num">2</div>
+                <div>
+                    <strong>"Events" 탭 클릭</strong>
+                    <p style="color: #94a3b8; margin-top: 4px;">
+                        Events 탭에서 <code>Transfer</code> 이벤트를 확인합니다.<br>
+                        <code>from</code> 이 <code>0x0000...0000</code> 인 트랜잭션 = <strong>Mint (발행)</strong><br>
+                        <code>to</code> 가 <code>0x0000...0000</code> 인 트랜잭션 = <strong>Burn (소각)</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="guide-step">
+                <div class="guide-step-num">3</div>
+                <div>
+                    <strong>Mint 트랜잭션 하나를 클릭해서 상세 정보 확인</strong>
+                    <p style="color: #94a3b8; margin-top: 4px;">
+                        확인할 것들:<br>
+                        - <strong>Value:</strong> 얼마나 발행되었는가?<br>
+                        - <strong>From/To:</strong> 누가 발행을 요청했는가?<br>
+                        - <strong>Gas Fee:</strong> 수수료는 얼마였는가?<br>
+                        - <strong>Timestamp:</strong> 언제 발행되었는가?
+                    </p>
+                </div>
+            </div>
+
+            <div class="guide-step">
+                <div class="guide-step-num">4</div>
+                <div>
+                    <strong>우리의 KSD Mint와 비교해보기</strong>
+                    <p style="color: #94a3b8; margin-top: 4px;">
+                        방금 우리가 체험한 KSD Mint와 구조적으로 동일합니다.<br>
+                        차이점: USDC는 <strong>권한이 있는 주소만</strong> Mint할 수 있고,<br>
+                        우리 KSD는 교육 목적으로 <strong>누구나</strong> Mint할 수 있도록 했습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+<!-- ===== JavaScript ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+<script>
+    // ===== 설정 =====
+    const CONTRACT_ADDRESS = '__CONTRACT_ADDRESS__'; // 배포 후 교체
+    const BASE_SEPOLIA_CHAIN_ID = '0x14a34'; // 84532
+    const BASE_SEPOLIA_CONFIG = {
+        chainId: BASE_SEPOLIA_CHAIN_ID,
+        chainName: 'Base Sepolia',
+        nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+        rpcUrls: ['https://sepolia.base.org'],
+        blockExplorerUrls: ['https://sepolia.basescan.org']
+    };
+    const KSD_ABI = [
+        'function mint(address to, uint256 amount) external',
+        'function burn(uint256 amount) external',
+        'function balanceOf(address) view returns (uint256)',
+        'function totalSupply() view returns (uint256)',
+        'function totalReserves() view returns (uint256)',
+        'function decimals() view returns (uint8)',
+        'function name() view returns (string)',
+        'function symbol() view returns (string)',
+        'event Minted(address indexed to, uint256 amount, uint256 newReserves)',
+        'event Burned(address indexed from, uint256 amount, uint256 newReserves)'
+    ];
+    const DECIMALS = 6;
+
+    // ===== 상태 =====
+    let provider = null;
+    let signer = null;
+    let contract = null;
+    let userAddress = null;
+
+    // ===== 지갑 연결 =====
+    async function connectWallet() {
+        if (typeof window.ethereum === 'undefined') {
+            alert('MetaMask가 설치되어 있지 않습니다.\nhttps://metamask.io 에서 설치해주세요.');
+            return;
+        }
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            userAddress = accounts[0];
+
+            // Base Sepolia 네트워크 전환/추가
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: BASE_SEPOLIA_CHAIN_ID }]
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [BASE_SEPOLIA_CONFIG]
+                    });
+                } else {
+                    throw switchError;
+                }
+            }
+
+            provider = new ethers.BrowserProvider(window.ethereum);
+            signer = await provider.getSigner();
+            contract = new ethers.Contract(CONTRACT_ADDRESS, KSD_ABI, signer);
+
+            // UI 업데이트
+            document.getElementById('connectBtn').textContent = '연결됨';
+            document.getElementById('connectBtn').disabled = true;
+            document.getElementById('walletAddr').textContent =
+                userAddress.slice(0, 6) + '...' + userAddress.slice(-4);
+            document.getElementById('networkBadge').style.display = 'inline';
+            document.getElementById('networkBadge').textContent = 'Base Sepolia';
+            document.getElementById('networkBadge').className = 'network-badge network-ok';
+
+            // 버튼 활성화
+            document.getElementById('mintBtn').disabled = false;
+            document.getElementById('burnBtn').disabled = false;
+
+            // Step 번호 활성화
+            for (let i = 2; i <= 6; i++) {
+                document.getElementById('stepNum' + i).className = 'step-number active';
+            }
+
+            // 대시보드 & 잔액 업데이트
+            await refreshDashboard();
+            await refreshBalance();
+
+        } catch (err) {
+            console.error(err);
+            alert('지갑 연결 실패: ' + err.message);
+        }
+    }
+
+    // ===== Mint =====
+    async function doMint() {
+        const amountInput = document.getElementById('mintAmount').value;
+        if (!amountInput || amountInput <= 0) {
+            alert('발행할 금액을 입력하세요.');
+            return;
+        }
+        const amount = ethers.parseUnits(amountInput, DECIMALS);
+        const statusEl = document.getElementById('mintStatus');
+        const logEl = document.getElementById('mintLog');
+
+        try {
+            statusEl.innerHTML = '<span style="color:#f59e0b;">&#9203; 트랜잭션 전송 중... MetaMask를 확인하세요.</span>';
+            document.getElementById('mintBtn').disabled = true;
+
+            const tx = await contract.mint(userAddress, amount);
+            statusEl.innerHTML = '<span style="color:#60a5fa;">&#9203; 트랜잭션 확인 대기 중...</span>';
+
+            logEl.style.display = 'block';
+            addLog(logEl, `Mint TX 전송: ${txLink(tx.hash)}`);
+
+            const receipt = await tx.wait();
+            addLog(logEl, `Mint 완료! ${amountInput} KSD 발행됨 (블록 #${receipt.blockNumber})`);
+            statusEl.innerHTML = `<span style="color:#10b981;">&#10003; ${amountInput} KSD가 성공적으로 발행되었습니다!</span>`;
+
+            await refreshDashboard();
+            await refreshBalance();
+        } catch (err) {
+            console.error(err);
+            statusEl.innerHTML = `<span style="color:#ef4444;">&#10007; 에러: ${err.reason || err.message}</span>`;
+        } finally {
+            document.getElementById('mintBtn').disabled = false;
+        }
+    }
+
+    // ===== Burn =====
+    async function doBurn() {
+        const amountInput = document.getElementById('burnAmount').value;
+        if (!amountInput || amountInput <= 0) {
+            alert('소각할 금액을 입력하세요.');
+            return;
+        }
+        const amount = ethers.parseUnits(amountInput, DECIMALS);
+        const statusEl = document.getElementById('burnStatus');
+        const logEl = document.getElementById('burnLog');
+
+        try {
+            statusEl.innerHTML = '<span style="color:#f59e0b;">&#9203; 트랜잭션 전송 중... MetaMask를 확인하세요.</span>';
+            document.getElementById('burnBtn').disabled = true;
+
+            const tx = await contract.burn(amount);
+            statusEl.innerHTML = '<span style="color:#60a5fa;">&#9203; 트랜잭션 확인 대기 중...</span>';
+
+            logEl.style.display = 'block';
+            addLog(logEl, `Burn TX 전송: ${txLink(tx.hash)}`);
+
+            const receipt = await tx.wait();
+            addLog(logEl, `Burn 완료! ${amountInput} KSD 소각됨 (블록 #${receipt.blockNumber})`);
+            statusEl.innerHTML = `<span style="color:#10b981;">&#10003; ${amountInput} KSD가 소각되고, ${amountInput} USD가 환매되었습니다!</span>`;
+
+            await refreshDashboard();
+            await refreshBalance();
+        } catch (err) {
+            console.error(err);
+            statusEl.innerHTML = `<span style="color:#ef4444;">&#10007; 에러: ${err.reason || err.message}</span>`;
+        } finally {
+            document.getElementById('burnBtn').disabled = false;
+        }
+    }
+
+    // ===== 대시보드 =====
+    async function refreshDashboard() {
+        if (!contract) return;
+        try {
+            const [supply, reserves] = await Promise.all([
+                contract.totalSupply(),
+                contract.totalReserves()
+            ]);
+            const supplyNum = parseFloat(ethers.formatUnits(supply, DECIMALS));
+            const reservesNum = parseFloat(ethers.formatUnits(reserves, DECIMALS));
+            const ratio = supplyNum > 0 ? ((reservesNum / supplyNum) * 100) : 0;
+
+            document.getElementById('dashSupply').textContent = supplyNum.toLocaleString();
+            document.getElementById('dashReserves').textContent = reservesNum.toLocaleString();
+            document.getElementById('dashRatio').textContent = supplyNum > 0 ? ratio.toFixed(0) + '%' : '-';
+            document.getElementById('coverageText').textContent =
+                supplyNum > 0 ? `${reservesNum.toLocaleString()} / ${supplyNum.toLocaleString()} USD` : '-';
+
+            const barWidth = Math.min(ratio, 100);
+            document.getElementById('coverageBar').style.width = barWidth + '%';
+            document.getElementById('coverageBar').textContent = supplyNum > 0 ? ratio.toFixed(0) + '%' : '';
+        } catch (err) {
+            console.error('Dashboard refresh error:', err);
+        }
+    }
+
+    // ===== 잔액 =====
+    async function refreshBalance() {
+        if (!contract || !userAddress) return;
+        try {
+            const balance = await contract.balanceOf(userAddress);
+            const balanceNum = parseFloat(ethers.formatUnits(balance, DECIMALS));
+            document.getElementById('myBalance').textContent = balanceNum.toLocaleString();
+        } catch (err) {
+            console.error('Balance refresh error:', err);
+        }
+    }
+
+    // ===== 페깅 시뮬레이터 =====
+    let currentScenario = null;
+    let currentArbStep = 0;
+
+    const scenarios = {
+        below: {
+            title: '차익거래: KSD가 $0.98일 때',
+            desc: '시장에서 KSD가 $0.98에 거래되고 있지만, 항상 $1.00에 환매(Burn)할 수 있습니다.',
+            steps: [
+                { text: '시장에서 KSD를 $0.98에 매수', detail: '100 KSD를 $98에 구매' },
+                { text: 'KSD를 Burn하여 $1.00에 환매 요청', detail: '100 KSD를 소각 → $100 수령' },
+                { text: '차익 실현!', detail: '$100 - $98 = $2 이익 (2% 수익)' }
+            ],
+            result: '많은 사람이 이 차익거래를 하면 → KSD 매수 증가 → 시장 가격 상승 → $1.00으로 수렴!'
+        },
+        above: {
+            title: '차익거래: KSD가 $1.02일 때',
+            desc: '시장에서 KSD가 $1.02에 거래되고 있지만, 항상 $1.00에 발행(Mint)할 수 있습니다.',
+            steps: [
+                { text: '$1.00에 KSD를 Mint (발행)', detail: '$100 입금 → 100 KSD 발행' },
+                { text: '시장에서 KSD를 $1.02에 매도', detail: '100 KSD를 $102에 판매' },
+                { text: '차익 실현!', detail: '$102 - $100 = $2 이익 (2% 수익)' }
+            ],
+            result: '많은 사람이 이 차익거래를 하면 → KSD 매도 증가 → 시장 가격 하락 → $1.00으로 수렴!'
+        }
+    };
+
+    function selectScenario(type) {
+        currentScenario = type;
+        currentArbStep = 0;
+        document.getElementById('scenarioBelow').className =
+            'peg-scenario' + (type === 'below' ? ' active' : '');
+        document.getElementById('scenarioAbove').className =
+            'peg-scenario' + (type === 'above' ? ' active' : '');
+
+        const s = scenarios[type];
+        document.getElementById('arbTitle').textContent = s.title;
+        document.getElementById('arbDesc').textContent = s.desc;
+
+        const stepsEl = document.getElementById('arbSteps');
+        stepsEl.innerHTML = s.steps.map((step, i) => `
+            <li id="arbStep${i}">
+                <div class="arb-step-num">${i + 1}</div>
+                <div>
+                    <strong>${step.text}</strong>
+                    <div style="color: #94a3b8; font-size: 13px; margin-top: 4px;">${step.detail}</div>
+                </div>
+            </li>
+        `).join('');
+
+        document.getElementById('arbSimulation').style.display = 'block';
+        document.getElementById('arbResult').style.display = 'none';
+        document.getElementById('arbNextBtn').disabled = false;
+    }
+
+    function nextArbStep() {
+        if (!currentScenario) return;
+        const s = scenarios[currentScenario];
+
+        if (currentArbStep < s.steps.length) {
+            // 이전 단계들을 done으로
+            for (let i = 0; i < currentArbStep; i++) {
+                document.getElementById('arbStep' + i).className = 'done';
+            }
+            // 현재 단계를 active로
+            document.getElementById('arbStep' + currentArbStep).className = 'active';
+
+            currentArbStep++;
+
+            if (currentArbStep === s.steps.length) {
+                // 마지막 단계도 done으로 표시하고 결과 보여주기
+                setTimeout(() => {
+                    document.getElementById('arbStep' + (currentArbStep - 1)).className = 'done';
+                    document.getElementById('arbResult').style.display = 'block';
+                    document.getElementById('arbResult').innerHTML =
+                        `<strong style="color: #6ee7b7;">&#10003; ${s.result}</strong>`;
+                    document.getElementById('arbNextBtn').disabled = true;
+                }, 500);
+            }
+        }
+    }
+
+    function resetArb() {
+        if (currentScenario) selectScenario(currentScenario);
+    }
+
+    // ===== 유틸 =====
+    function txLink(hash) {
+        return `<a href="https://sepolia.basescan.org/tx/${hash}" target="_blank">${hash.slice(0, 10)}...${hash.slice(-6)}</a>`;
+    }
+
+    function addLog(logEl, message) {
+        const entry = document.createElement('div');
+        entry.className = 'entry';
+        const time = new Date().toLocaleTimeString();
+        entry.innerHTML = `<span style="color:#6b7280;">[${time}]</span> ${message}`;
+        logEl.appendChild(entry);
+        logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // ===== 스텝 토글 =====
+    function toggleStep(n) {
+        const content = document.getElementById('stepContent' + n);
+        const chevron = document.getElementById('chevron' + n);
+        if (content.classList.contains('open')) {
+            content.classList.remove('open');
+            chevron.classList.remove('open');
+        } else {
+            content.classList.add('open');
+            chevron.classList.add('open');
+        }
+    }
+
+    // ===== MetaMask 이벤트 =====
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if (accounts.length === 0) {
+                location.reload();
+            } else {
+                userAddress = accounts[0];
+                document.getElementById('walletAddr').textContent =
+                    userAddress.slice(0, 6) + '...' + userAddress.slice(-4);
+                refreshBalance();
+            }
+        });
+        window.ethereum.on('chainChanged', () => location.reload());
+    }
+</script>
+</body>
+</html>
