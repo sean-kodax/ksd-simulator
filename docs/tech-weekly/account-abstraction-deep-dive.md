@@ -430,7 +430,23 @@ Base Mainnet: ~$0.001/UserOp
 | EntryPoint 주소 | v0.7: `0x0000000071727De22E5E9d8BAf0edAc6f37da032` (모든 EVM 체인 동일) |
 | 최초 배포 Gas | 첫 UserOp은 계정 배포로 +200-400k gas. 이후 100-200k |
 
-## 10. 참고 자료
+## 10. postOp Double-Call Pattern
+
+- If postOp reverts, EntryPoint catches and calls postOp AGAIN with mode=postOpReverted
+- This second call MUST NOT revert
+- Prevents users from getting free gas by making postOp revert intentionally
+- Critical for ERC-20 Paymaster security
+
+## 11. Key Presentation Takeaways
+
+1. ERC-4337 requires no protocol changes — entirely smart contract level
+2. Two-loop design (validate-then-execute) prevents cross-UserOp invalidation
+3. Paymasters break the chicken-and-egg onboarding problem
+4. Gas model is self-balancing via deposit/refund/compensate
+5. v0.7 packs gas fields for L2 efficiency
+6. For KSD workshop: Coinbase Paymaster on Base Sepolia eliminates ETH requirement with ~50 lines of TypeScript
+
+## 12. 참고 자료
 
 - [ERC-4337 Spec](https://eips.ethereum.org/EIPS/eip-4337)
 - [eth-infinitism/account-abstraction](https://github.com/eth-infinitism/account-abstraction) — 레퍼런스 구현

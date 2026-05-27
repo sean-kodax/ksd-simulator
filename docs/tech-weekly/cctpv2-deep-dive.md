@@ -417,7 +417,21 @@ if (_msg._getDestinationCaller() != bytes32(0)) {
 - Reorg 발생 시: 소스 체인의 burn이 취소되었지만, 목적지에서는 이미 mint됨
 - Circle이 이 리스크를 부담 → `maxFee`로 보상
 
-## 8. 참고 자료
+## 8. Fast Transfer Mechanism Deep Dive
+
+- V2 nonces are assigned OFFCHAIN by Circle (contract emits nonce=bytes32(0)), not incremented onchain like V1
+- Circle fills in nonce, finalityThresholdExecuted, feeExecuted, expirationBlock before signing
+- Fast transfers use a global allowance pool maintained by Circle
+- Expired messages can be re-attested via POST /v2/reattest/{nonce}
+- Fee precision: minFee in 1/1000 basis points, MIN_FEE_MULTIPLIER = 10_000_000
+- On Arbitrum-stack chains, expirationBlock references L1 block numbers, not L2
+
+## 9. TokenMinterV2 Dual Mint
+
+- V2 adds dual-recipient mint: mint(sourceDomain, burnToken, recipientOne, recipientTwo, amountOne, amountTwo)
+- This is how fees are split in a single call — one mint to recipient, one to feeRecipient
+
+## 10. 참고 자료
 
 - [CCTPv2 Whitepaper](https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/PDFs/Whitepapers/CCTPV2_White_Paper.pdf)
 - [circlefin/evm-cctp-contracts](https://github.com/circlefin/evm-cctp-contracts) — 전체 소스코드
