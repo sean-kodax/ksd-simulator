@@ -387,8 +387,230 @@ Curve의 3pool (USDC + USDT + DAI) 풀에서 극적인 장면이 벌어진다:
 2023.3  SVB/USDC 디페깅 — 담보형의 준비금 리스크 노출 ($0.87)
    ↓                                              ← 인프라의 시대
 2025.5  CCTPv2 — 크로스체인 네이티브 전송 (Burn & Mint)
+2025.5  CCTPv2 — 크로스체인 네이티브 전송 (Burn & Mint)
 2025.5  x402 프로토콜 — HTTP 네이티브 스테이블코인 결제
 2025.7  GENIUS Act 서명 — 미국 스테이블코인 법제화
 2025.6  Circle IPO — NYSE 상장 (CRCL)
 2026    시총 $315B+, AI 에이전트 결제, 토큰화 자산의 기축
 ```
+
+---
+
+# Part 2: 미래 — 스테이블코인이 만드는 세상
+
+---
+
+## 2-1. 국경이 사라지는 송금
+
+### 현재 국제 송금의 문제
+
+| 항목 | SWIFT (현재) | 스테이블코인 |
+|------|-------------|-------------|
+| 속도 | 3~5 영업일 | **수 초~3분** |
+| 수수료 | $25~50/건 | **$0.01~$1.00** |
+| 운영 시간 | 은행 영업시간 | **24/7/365** |
+| 경유 | 중간 은행 3~4개 | **직접 전송** |
+
+전 세계 국제 송금 시장은 연간 **$190T** 규모다. 개발도상국의 평균 송금 수수료는 **6.49%**(세계은행), 사하라 이남 아프리카는 **7.9%**에 달한다.
+
+### 이미 일어나고 있는 변화
+
+- 2025년 B2B 스테이블코인 결제: **$226B** (전년 대비 **733%** 성장)
+- 필리핀 해외 근로자(OFW) 송금: 기존 6% → 스테이블코인 **~1%** (연 $38.3B 규모)
+- 케냐 프리랜서 대상 Mercy Corps 파일럿: 수수료 **29% → 2%**
+- 암호화폐 기반 송금 시장: 2026년 $35B → 2030년 **$85.8B** 전망
+
+### 상상해보기
+
+> 필리핀의 간호사가 두바이에서 일하며 매달 $500을 고향에 보낸다. 기존에는 $32.50(6.5%)가 수수료로 사라졌다. 스테이블코인으로는 $0.50 이하. **연간 $384 절약** — 이것은 필리핀에서 한 달 생활비에 해당한다.
+
+### 금융 포용 (Financial Inclusion)
+
+전 세계 **14억 명**이 은행 계좌를 갖고 있지 않다 (World Bank). 하지만 스마트폰은 있다.
+
+스테이블코인은 **스마트폰만 있으면** 달러를 보유하고, 보내고, 받을 수 있게 해준다. 은행 계좌도, 신용 점수도, 최소 잔액도 필요 없다. 아르헨티나에서 인플레이션 헤지를 위해, 나이지리아에서 해외 결제를 위해, 필리핀에서 가족 송금을 위해 이미 사용되고 있다.
+
+> "달러 은행 계좌 없이도 달러를 보유할 수 있다." 이것이 금융 포용의 핵심이다.
+
+---
+
+## 2-2. 기계가 기계에게 돈을 내는 세상
+
+### AI 에이전트 경제 — 이미 시작되었다
+
+| 항목 | 수치 (2025.5~2026.4) |
+|------|---------------------|
+| AI 에이전트 트랜잭션 | **1.76억 건** |
+| 총 결제 금액 | **$73M** |
+| USDC 비중 | **98.6%** |
+| 평균 결제 금액 | **$0.31~$0.48** |
+| x402 프로토콜 처리 | **1.69억 건**, 48만 에이전트 |
+
+### 왜 스테이블코인이어야 하는가
+
+기존 결제 시스템은 **사람을 위해 설계**되었다. AI 에이전트는:
+- 신용카드를 만들 수 없다
+- 은행 계좌를 열 수 없다
+- 구독 결제를 승인할 사람이 없다
+
+스테이블코인은 **코드가 직접 결제할 수 있는** 유일한 화폐다. `approve()` + `transferFrom()` — 이 두 함수가 기계 경제를 가능하게 한다.
+
+### x402 프로토콜
+
+1997년부터 존재했지만 아무도 쓰지 않던 HTTP 상태 코드 **402 (Payment Required)**. 스테이블코인이 이 코드를 살렸다.
+
+```
+AI 에이전트: GET /api/weather-data
+서버:        402 Payment Required {"price": "$0.001", "token": "USDC"}
+AI 에이전트: (자동으로 USDC $0.001 결제)
+서버:        200 OK + 데이터 제공
+```
+
+계정도 없고, 구독도 없고, API 키도 없다. **결제만으로 접근.**
+
+x402 Foundation 참여 기업: Google, Visa, Stripe, Mastercard, Circle, AWS, Microsoft, Shopify, American Express (2026)
+
+### 시장 전망
+
+- Gartner: 2030년까지 **기계 고객이 전체 구매의 20%**, **$30T** 규모
+- McKinsey: 에이전트 커머스가 미국 B2C 매출 **$1T**에 영향
+
+### 상상해보기
+
+> 당신의 AI 비서가 매일 아침 30개 뉴스 소스에서 기사를 읽는다. 기사당 $0.003을 USDC로 자동 결제한다. 월 $2.70. 어떤 구독도 하지 않지만, 읽은 만큼만 정확히 지불한다. 기자는 1,000명이 자기 기사를 읽으면 $3을 번다. 광고 없이, 구독 강요 없이.
+
+> 당신의 자율주행차가 주차장에 들어간다. 기계가 기계에게 주차료를 초 단위로 스트리밍 결제한다. 45분 23초 주차, $2.27 결제. 정산서도 영수증도 없다. 코드가 코드에게 돈을 냈을 뿐이다.
+
+---
+
+## 2-3. 초 단위 급여 — 일하는 매 순간 돈이 들어온다
+
+### 현재 급여 시스템의 문제
+
+- 월 1회 또는 2주 1회 일괄 지급
+- 급여일 전에 돈이 필요하면? → 대출, 선불 서비스 (수수료 발생)
+- 프리랜서/긱 워커: 결제까지 30~90일 대기
+- 미국 근로자의 78%가 급여일 전에 재정적 스트레스를 겪음
+
+### 스트리밍 페이먼트
+
+연봉 $60,000 = 초당 **$0.0019**가 흐르는 급여.
+
+```
+09:00  출근 → 급여 스트림 시작
+12:00  오전 근무분 $95.04가 이미 지갑에
+13:00  점심 먹으면서 오전 급여로 결제
+18:00  퇴근 → 오늘 하루 $190.08 수령 완료
+```
+
+- Superfluid, Sablier, Zebec 등 프로토콜이 이미 운영 중
+- Deel이 **2026.5에 스테이블코인 급여 지급 정식 출시** (BVNK 인프라)
+- Stripe이 **에이전트 AI 경제를 위한 결제 인프라** 재설계 발표 (2026)
+
+### 상상해보기
+
+> 서울의 프리랜서 디자이너가 뉴욕 스타트업의 로고를 작업한다. 작업을 시작하는 순간 Sablier 스트림이 열린다. 4시간 작업, $120가 초 단위로 지갑에 흘러들어온다. 인보이스도, 30일 결제 대기도, 국제 송금 수수료도 없다. 작업이 끝나면 스트림이 멈추고, 돈은 이미 있다.
+
+---
+
+## 2-4. 구독의 종말 — Pay-Per-Use
+
+### 현재 구독 모델의 비효율
+
+- 넷플릭스 한 달에 1편만 봐도 $15.49
+- 뉴스 사이트 기사 1개 읽으려면 연간 구독 $120
+- 월 구독이 필요한 서비스가 너무 많아서 "구독 피로(Subscription Fatigue)"
+
+### 마이크로페이먼트가 바꾸는 것
+
+| 현재 | 미래 |
+|------|------|
+| 넷플릭스 월 $15.49 | 영화 1편 $0.99 |
+| NYT 연 $120 | 기사 1개 $0.10 |
+| Spotify 월 $10.99 | 곡당 $0.005 |
+| 스포츠 채널 패키지 $80 | 경기 1회 $0.50 |
+
+- Cloudflare의 **NetDollar**: AI 크롤러가 퍼블리셔 데이터 접근 시 실시간 소액 결제
+- Meta도 **스테이블코인 기반 크리에이터 페이아웃** 탐색 중 (더 긴 롱테일의 크리에이터에게 수익 분배)
+
+### 상상해보기
+
+> 뉴욕타임스 기사 링크를 클릭한다. "이 기사: $0.15" 팝업이 뜬다. 원클릭으로 USDC 결제. 광고 없는 깨끗한 페이지가 열린다. 기자는 읽힌 만큼 정확히 보상받는다. 구독을 강요할 필요도, 광고를 볼 필요도 없다.
+
+---
+
+## 2-5. 토큰화된 세상의 기축 화폐
+
+### 실물 자산 토큰화 (RWA)
+
+- 2026.5 기준 **$32B+** (전년 대비 200% 성장)
+- 토큰화된 미국 국채, 부동산, 주식, 채권, 미술품
+- 거래 시 결제 수단 = 스테이블코인
+- Mastercard가 2026.3에 스테이블코인 인프라 기업 **BVNK 인수**
+
+### 상상해보기
+
+> 서울의 직장인이 스마트폰으로 뉴욕 맨해튼 빌딩의 0.001% 지분을 $50에 구매한다. 결제는 USDC. 매달 임대료 수익 $0.12가 스마트 컨트랙트를 통해 자동으로 지갑에 입금된다. 부동산 투자에 수억원이 필요한 시대가 끝난다. 최소 투자금은 $1이다.
+
+---
+
+## 2-6. 그림자 — 감시와 통제의 도구?
+
+스테이블코인의 미래가 장밋빛만은 아니다.
+
+### 중앙화된 통제권
+
+USDC/USDT의 스마트 컨트랙트에는 **`blacklist`** 함수가 있다. 발행사가 특정 주소의 자산을 **원격으로 동결**할 수 있다.
+
+- OFAC 제재 대상 주소: 발행사가 자발적으로 동결
+- 법 집행 기관 요청: 수사 대상 자산 동결
+- 2026.4: 미 재무부가 스테이블코인 발행사에 **AML/제재 준수 의무** 부과 규칙 제안 (FinCEN + OFAC)
+
+### "immutable" 코드 안의 "mutable" 통제
+
+```
+스마트 컨트랙트의 transfer 로직 → immutable (불변)
+스마트 컨트랙트의 freeze/blacklist → mutable (가변)
+```
+
+"탈중앙화"를 표방하지만, **통제 레이어는 중앙화**되어 있다. 누가 admin key를 가지고 있고, 언제 freeze를 실행할 것인지는 on-chain에 기록되지 않는 off-chain 정책이다.
+
+### 양날의 검
+
+**자유의 도구:**
+- 14억 명에게 은행 없이 달러를 준다
+- 독재 국가에서 자산을 보호한다
+- 국경을 넘어 즉시 가치를 전송한다
+
+**통제의 도구:**
+- 특정 인물의 자산을 원격으로 동결한다
+- 모든 거래가 블록체인에 영구 기록된다
+- 정부가 요청하면 발행사가 협조한다
+
+### 강의 포인트
+
+> "스테이블코인은 자유의 도구인 동시에 통제의 도구입니다. 14억 명에게 은행 없이 달러를 주는 것과, 특정 인물의 자산을 원격으로 동결하는 것이 같은 기술로 가능합니다. 프로그래머블 머니는 프로그래머블 감시이기도 합니다. 이 긴장이 스테이블코인의 미래를 결정할 것입니다."
+
+---
+
+## 2-7. 참고 자료
+
+**송금/금융 포용:**
+- [IMF — How Stablecoins Can Improve Payments and Global Finance](https://www.imf.org/en/blogs/articles/2025/12/04/how-stablecoins-can-improve-payments-and-global-finance)
+- [CoinLaw — Crypto Remittance Statistics 2026](https://coinlaw.io/cryptocurrency-based-remittance-statistics/)
+
+**AI 에이전트 경제:**
+- [Benzinga — AI Agents Becoming Stablecoins' Biggest Growth Driver](https://www.benzinga.com/Opinion/26/05/52758913/why-ai-agents-are-becoming-stablecoins-biggest-growth-driver)
+- [Nevermined — 40 Stablecoin AI Agent Statistics](https://nevermined.ai/blog/stablecoin-payments-ai-agents-statistics)
+
+**크로스보더/B2B:**
+- [Chainalysis — Stablecoin Utility and Future of Payments](https://www.chainalysis.com/blog/stablecoin-utility-future-of-payments/)
+- [AlphaPoint — Cross-Border Payments 2026 Guide](https://alphapoint.com/blog/cross-border-global-payments-with-stablecoins-the-definitive-2026-guide/)
+
+**스트리밍 급여:**
+- [Monad — Streaming Payments with Stablecoins](https://blog.monad.xyz/blog/streaming-payments-with-stablecoins)
+- [Deel — Stablecoin Salary Payouts](https://www.cpapracticeadvisor.com/2026/05/26/deel-announces-stablecoin-salary-payouts-new-head-of-crypto/183971/)
+
+**감시/통제:**
+- [Range Security — Deep Dive into Stablecoin Blacklisting](https://www.range.org/blog/onchain-enforcement-a-deep-dive-into-stablecoin-blacklisting)
+- [Holland & Knight — GENIUS Act AML/Sanctions Rules](https://www.hklaw.com/en/insights/publications/2026/04/fincen-and-ofac-propose-aml-sanctions-rules-for-stablecoin-issuers)
